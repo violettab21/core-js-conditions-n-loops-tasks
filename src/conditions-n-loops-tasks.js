@@ -521,8 +521,8 @@ function shuffleChar(str, iterations) {
   let maxIterationsCount = iterations;
   let minIteration = iterations;
   while (i < minIteration) {
-    let newStr = '';
-    for (let j = 0; j < copyStr.length; j += 2) {
+    let newStr = str[0];
+    for (let j = 2; j < copyStr.length; j += 2) {
       newStr += copyStr[j];
     }
     for (let j = 1; j < copyStr.length; j += 2) {
