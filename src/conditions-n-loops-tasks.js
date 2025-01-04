@@ -523,35 +523,29 @@ function sortByAsc(arr) {
  *  'qwerty', 1 => 'qetwry'
  *  '012345', 2 => '024135' => '043215'
  *  'qwerty', 2 => 'qetwry' => 'qtrewy'
- *  '012345', 3 => '024135' => '043215' => '031425' =>
- *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey' => 'qwerty'
+ *  '012345', 3 => '024135' => '043215' => '031425'
+ *  'qwerty', 3 => 'qetwry' => 'qtrewy' => 'qrwtey'
  *  '0123', 2 => '0213' => 01234
  */
 function shuffleChar(str, iterations) {
-  let i = 0;
-
-  let copyStr = str;
-
-  let maxIterationsCount = iterations;
-  let minIteration = iterations;
-  while (i < minIteration) {
-    let newStr1 = '';
-    let newStr2 = '';
-    for (let j = 0; j < copyStr.length; j += 1) {
-      if (j % 2 === 0) newStr1 += copyStr[j];
-      else newStr2 += copyStr[j];
+  const initialStr = str;
+  function shuffle(string, i) {
+    if (i !== 0) {
+      let newStr1 = '';
+      let newStr2 = '';
+      for (let j = 0; j < string.length; j += 1) {
+        if (j % 2 === 0) newStr1 += string[j];
+        else newStr2 += string[j];
+      }
+      const res = newStr1 + newStr2;
+      if (res === initialStr) {
+        return shuffle(res, iterations % (iterations - i + 1));
+      }
+      return shuffle(res, i - 1);
     }
-
-    copyStr = newStr1 + newStr2;
-    i += 1;
-    if (copyStr === str) {
-      maxIterationsCount = i;
-      minIteration = iterations % maxIterationsCount;
-      i = 0;
-    }
+    return string;
   }
-
-  return copyStr;
+  return shuffle(str, iterations);
 }
 
 /**
