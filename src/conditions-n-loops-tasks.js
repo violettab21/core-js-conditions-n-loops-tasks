@@ -478,20 +478,34 @@ function rotateMatrix(matrix) {
  *  [-2, 9, 5, -3]  => [-3, -2, 5, 9]
  */
 function sortByAsc(arr) {
-  let temp;
-  const sortedArray = arr;
-  for (let i = 0; i < sortedArray.length - 1; i += 1) {
-    let min = i;
-    for (let j = i; j < sortedArray.length; j += 1) {
-      if (sortedArray[j] < sortedArray[min]) {
-        min = j;
+  function sort(array, left, right) {
+    const swappedArray = array;
+    const pivot = swappedArray[Math.floor((left + right) / 2)];
+    let i = left;
+    let j = right;
+    while (i <= j) {
+      while (swappedArray[i] < pivot) {
+        i += 1;
+      }
+
+      while (swappedArray[j] > pivot) {
+        j -= 1;
+      }
+
+      if (i <= j) {
+        const temp = swappedArray[i];
+        swappedArray[i] = swappedArray[j];
+        swappedArray[j] = temp;
+        i += 1;
+        j -= 1;
       }
     }
-    temp = sortedArray[i];
-    sortedArray[i] = sortedArray[min];
-    sortedArray[min] = temp;
+    const sortedPosition = i;
+    if (sortedPosition - 1 > left) sort(swappedArray, left, sortedPosition - 1);
+    if (sortedPosition < right) sort(swappedArray, sortedPosition, right);
+    return swappedArray;
   }
-
+  const sortedArray = sort(arr, 0, arr.length - 1);
   return sortedArray;
 }
 
@@ -521,15 +535,14 @@ function shuffleChar(str, iterations) {
   let maxIterationsCount = iterations;
   let minIteration = iterations;
   while (i < minIteration) {
-    let newStr = '';
-    for (let j = 0; j < copyStr.length; j += 2) {
-      newStr += copyStr[j];
-    }
-    for (let j = 1; j < copyStr.length; j += 2) {
-      newStr += copyStr[j];
+    let newStr1 = '';
+    let newStr2 = '';
+    for (let j = 0; j < copyStr.length; j += 1) {
+      if (j % 2 === 0) newStr1 += copyStr[j];
+      else newStr2 += copyStr[j];
     }
 
-    copyStr = newStr;
+    copyStr = newStr1 + newStr2;
     i += 1;
     if (copyStr === str) {
       maxIterationsCount = i;
