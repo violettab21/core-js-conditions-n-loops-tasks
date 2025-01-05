@@ -566,39 +566,34 @@ function shuffleChar(str, iterations) {
  * @returns {number} The nearest larger number, or original number if none exists.
  */
 function getNearestBigger(number) {
-  let generatedNumber;
   const string = String(number);
   const arr = [];
   for (let i = 0; i < string.length; i += 1) {
     arr.push(string[i]);
   }
-  let tempArray = [];
-  const copy = [];
-  for (let i = 0; i < arr.length; i += 1) {
-    copy.push(arr[i]);
-  }
   let min;
-  let nextMin;
   let minIndex;
-  const getLastIndex = (el) => el === min;
+  let tempArray = [];
+  const arrayLength = arr.length;
   for (let i = arr.length - 1; i >= 0; i -= 1) {
     if (arr[i - 1] < arr[i]) {
       min = arr[i - 1];
+      minIndex = i - 1;
       for (let j = i - 1; j <= arr.length - 1; j += 1) {
         tempArray.push(arr[j]);
       }
-      tempArray = tempArray.sort((a, b) => a - b);
-      minIndex = tempArray.findLastIndex(getLastIndex);
-      nextMin = tempArray[minIndex + 1];
-      tempArray.splice(minIndex + 1, 1);
-      tempArray = tempArray.sort((a, b) => a - b);
-
-      copy.splice(i - 1, arr.length - i + 1, nextMin, ...tempArray);
-      generatedNumber = +copy.join('');
-      return generatedNumber;
+      break;
     }
   }
-  return number;
+  tempArray.sort((a, b) => a - b);
+
+  const minIndexTemp = tempArray.findLastIndex((el) => el === min);
+  const nextMin = tempArray[minIndexTemp + 1];
+  tempArray.splice(minIndexTemp + 1, 1);
+  tempArray = tempArray.sort((a, b) => a - b);
+  arr.splice(minIndex, arrayLength - minIndex + 1, nextMin, ...tempArray);
+
+  return +arr.join('');
 }
 
 module.exports = {
